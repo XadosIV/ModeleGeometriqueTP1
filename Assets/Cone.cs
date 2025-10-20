@@ -3,15 +3,9 @@ using UnityEngine;
 
 public class Cone : MonoBehaviour
 {
-    /*
-     Ecrivez un programme permettant de mod´eliser un cylindre et le d´ecomposer en facettes
-    triangulaires. La m´ethode Cylindre comprendra des param`etres comme le rayon, la hauteur,
-    le nombre de m´eridiens. Le cylindre sera ferm´e par des disques. Attention `a la fa¸con dont
-    vous allez g´erer la liaison entre les disques et le corps du cylindre (´eventail, ajouter un centre
-    au disque, etc..)
-     */
-    public int height = 5;
-    public int width = 5;
+    public int nbMeridian = 10;
+    public int rayon = 5;
+    public int hauteur = 10;
 
     List<Vector3> vertices = new List<Vector3>();
     [SerializeField] List<int> triangles = new List<int>();
@@ -26,9 +20,7 @@ public class Cone : MonoBehaviour
         vertices.Clear();
         triangles.Clear();
 
-        int nbMeridian = 10;
-        int rayon = 5;
-        int hauteur = 10;
+        
 
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.Clear();
