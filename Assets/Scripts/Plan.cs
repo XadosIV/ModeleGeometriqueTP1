@@ -9,7 +9,7 @@ public class Plan : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
         mesh.Clear();
 
         List<Vector3> vertices = new List<Vector3>();

@@ -4,16 +4,15 @@ using UnityEngine;
 public class SphereMesh : MonoBehaviour
 {
     List<Vector3> vertices = new List<Vector3>();
-    [SerializeField] List<int> triangles = new List<int>();
+    List<int> triangles = new List<int>();
 
     public int nbMeridian = 10;
     public int nbParallele = 10;
     public int rayon = 5;
 
-    public int a;
-    public int b;
-    public int c;
-    public int d;
+
+
+    public bool showVerticesAsGizmos = true;
 
     void Start()
     {
@@ -24,7 +23,7 @@ public class SphereMesh : MonoBehaviour
         vertices.Clear();
         triangles.Clear();
 
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
         mesh.Clear();
 
         // Pole nord et sud
@@ -64,10 +63,10 @@ public class SphereMesh : MonoBehaviour
         {
             for (int j = 0; j < nbMeridian; j++)
             {
-                a = i * nbMeridian + j + 2;
-                b = i * nbMeridian + (j + 1) % nbMeridian + 2;
-                c = (i + 1) * nbMeridian + j + 2;
-                d = (i + 1) * nbMeridian + (j + 1) % nbMeridian + 2;
+                int a = i * nbMeridian + j + 2;
+                int b = i * nbMeridian + (j + 1) % nbMeridian + 2;
+                int c = (i + 1) * nbMeridian + j + 2;
+                int d = (i + 1) * nbMeridian + (j + 1) % nbMeridian + 2;
                 DrawPlan(a, b, c, d);
             }
         }
@@ -84,10 +83,13 @@ public class SphereMesh : MonoBehaviour
             }
         }
 
-        /*for (int i = 0; i < vertices.Count; i++)
+        if (showVerticesAsGizmos)
         {
-            Gizmos.DrawSphere(vertices[i], 0.2f);
-        }*/
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Gizmos.DrawSphere(vertices[i]+transform.position, 0.2f);
+            }
+        }
 
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();

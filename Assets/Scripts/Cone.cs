@@ -8,7 +8,9 @@ public class Cone : MonoBehaviour
     public int hauteur = 10;
 
     List<Vector3> vertices = new List<Vector3>();
-    [SerializeField] List<int> triangles = new List<int>();
+    List<int> triangles = new List<int>();
+
+    public bool showVerticesAsGizmos = true;
 
     void Start()
     {
@@ -22,7 +24,7 @@ public class Cone : MonoBehaviour
 
         
 
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
         mesh.Clear();
 
         float cut = 2 * Mathf.PI / nbMeridian;
@@ -33,11 +35,6 @@ public class Cone : MonoBehaviour
             float x = rayon * Mathf.Cos(angle);
             float y = rayon * Mathf.Sin(angle);
             vertices.Add(new Vector3(x, 0, y));
-        }
-
-        for (int i = 0; i < vertices.Count; i = i + 2)
-        {
-            //DrawPlan(i % vertices.Count, (i + 1) % vertices.Count, (i + 2) % vertices.Count, (i + 3) % vertices.Count);
         }
 
         int nbVertices = vertices.Count;
@@ -51,10 +48,12 @@ public class Cone : MonoBehaviour
             DrawTriangle(i % nbVertices, (i + 1) % nbVertices, vertices.Count-1);
         }
 
-
-        for (int i = 0; i < vertices.Count; i++)
+        if (showVerticesAsGizmos)
         {
-            Gizmos.DrawSphere(vertices[i], 0.2f);
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Gizmos.DrawSphere(vertices[i]+transform.position, 0.2f);
+            }
         }
 
         mesh.vertices = vertices.ToArray();

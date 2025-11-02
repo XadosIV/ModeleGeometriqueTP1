@@ -4,18 +4,20 @@ using UnityEngine;
 public class Cylindre : MonoBehaviour
 {
     /*
-     Ecrivez un programme permettant de mod´eliser un cylindre et le d´ecomposer en facettes
-    triangulaires. La m´ethode Cylindre comprendra des param`etres comme le rayon, la hauteur,
-    le nombre de m´eridiens. Le cylindre sera ferm´e par des disques. Attention `a la fa¸con dont
-    vous allez g´erer la liaison entre les disques et le corps du cylindre (´eventail, ajouter un centre
+     Ecrivez un programme permettant de modï¿½eliser un cylindre et le dï¿½ecomposer en facettes
+    triangulaires. La mï¿½ethode Cylindre comprendra des param`etres comme le rayon, la hauteur,
+    le nombre de mï¿½eridiens. Le cylindre sera fermï¿½e par des disques. Attention `a la faï¿½con dont
+    vous allez gï¿½erer la liaison entre les disques et le corps du cylindre (ï¿½eventail, ajouter un centre
     au disque, etc..)
      */
     public int nbMeridian = 10;
     public int rayon = 5;
     public int hauteur = 10;
 
+    public bool showVerticesAsGizmos = true;
+
     List<Vector3> vertices = new List<Vector3>();
-    [SerializeField] List<int> triangles = new List<int>();
+    List<int> triangles = new List<int>();
 
     void Start()
     {
@@ -28,7 +30,7 @@ public class Cylindre : MonoBehaviour
         triangles.Clear();
 
 
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
         mesh.Clear();
 
         float cut = 2 * Mathf.PI / nbMeridian;
@@ -58,12 +60,13 @@ public class Cylindre : MonoBehaviour
             DrawTriangle((i+1)%nbVertices, (i + 3)%nbVertices, vertices.Count-1);
         }
 
-
-        for (int i = 0;i < vertices.Count; i++)
+        if (showVerticesAsGizmos)
         {
-            Gizmos.DrawSphere(vertices[i], 0.2f);
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Gizmos.DrawSphere(vertices[i] + transform.position, 0.2f);
+            }
         }
-
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();

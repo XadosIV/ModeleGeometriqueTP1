@@ -4,12 +4,13 @@ using UnityEngine;
 public class conetronque : MonoBehaviour
 {
     public int nbMeridian = 10;
-    public float rayon = 5;
+    public float rayonBase = 5;
     public float hauteur_tronque = 6;
     public float hauteur = 10;
+    public bool showVerticesAsGizmos = true;
 
     List<Vector3> vertices = new List<Vector3>();
-    [SerializeField] List<int> triangles = new List<int>();
+    List<int> triangles = new List<int>();
 
     void Start()
     {
@@ -21,10 +22,12 @@ public class conetronque : MonoBehaviour
         vertices.Clear();
         triangles.Clear();
 
+        if (hauteur_tronque > hauteur) hauteur_tronque = hauteur;
+        if (hauteur_tronque < 0) hauteur_tronque = 0;
         float percent = 1 - hauteur_tronque / hauteur;
-        float rayon_tronque = rayon * percent;
+        float rayon_tronque = rayonBase * percent;
 
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        Mesh mesh = GetComponent<MeshFilter>().sharedMesh;
         mesh.Clear();
 
         float cut = 2 * Mathf.PI / nbMeridian;
@@ -32,8 +35,8 @@ public class conetronque : MonoBehaviour
         for (int i = 0; i < nbMeridian; i++)
         {
             float angle = cut * i;
-            float x = rayon * Mathf.Cos(angle);
-            float y = rayon * Mathf.Sin(angle);
+            float x = rayonBase * Mathf.Cos(angle);
+            float y = rayonBase * Mathf.Sin(angle);
             float dx = rayon_tronque * Mathf.Cos(angle);
             float dy = rayon_tronque * Mathf.Sin(angle);
             
@@ -59,9 +62,12 @@ public class conetronque : MonoBehaviour
         }
 
 
-        for (int i = 0; i < vertices.Count; i++)
+        if (showVerticesAsGizmos)
         {
-            Gizmos.DrawSphere(vertices[i], 0.2f);
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                Gizmos.DrawSphere(vertices[i]+transform.position, 0.2f);
+            }
         }
 
         mesh.vertices = vertices.ToArray();
