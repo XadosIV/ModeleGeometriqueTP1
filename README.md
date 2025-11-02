@@ -1,5 +1,7 @@
 # TP1 Modélisation Géométrique
 
+> Ce TP a été réalise sous Unity avec la version 6000.0.57f1
+
 Les scripts sont dans : `Assets/Scripts`
 Le projet n'a qu'une scène : `Assets/Scene/SampleScene.unity`  
 
